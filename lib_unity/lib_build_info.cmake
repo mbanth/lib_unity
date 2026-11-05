@@ -30,7 +30,8 @@ if(LIB_UNITY_USE_MEMORY)
     list(APPEND LIB_C_SRCS Unity/extras/memory/src/unity_memory.c)
 endif()
 
-if(APP_BUILD_ARCH STREQUAL "vx4b")
+# Include the Unity Helper macros only when building with the transitional tools
+if(NOT XMOS_IS_RV AND APP_BUILD_ARCH STREQUAL "vx4b")
     list(APPEND LIB_C_SRCS unity_helper.c)
 endif()
 
