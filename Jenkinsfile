@@ -13,18 +13,18 @@ pipeline {
 
     parameters {
         string(
-            name: 'TOOLS_XS3_VERSION',
+            name: 'TOOLS_VERSION_XS',
             defaultValue: '15.3.1',
             description: 'XTC tools version'
         )
         string(
-            name: 'TOOLS_VX4_VERSION',
-            defaultValue: '-j --repo arch_vx_slipgate -b develop -a XTC 1184',
-            description: 'XTC Slipgate tools version'
+            name: 'TOOLS_VERSION_VX_XCC',
+            defaultValue: 'slipgate@master:143',
+            description: 'VX (XTC) tools version'
         )
         string(
             name: 'XMOSDOC_VERSION',
-            defaultValue: 'v8.1.0',
+            defaultValue: 'v8.1.2',
             description: 'xmosdoc version'
         )
     }
@@ -56,7 +56,7 @@ pipeline {
                         stage('Examples build') {
                             steps {
                                 dir("${REPO_NAME}/examples") {
-                                    xcoreBuild(toolsVersion: params.TOOLS_XS3_VERSION)
+                                    xcoreBuild(toolsVersion: params.TOOLS_VERSION_XS)
                                 }
                             }
                         }
@@ -81,7 +81,7 @@ pipeline {
                         stage('Tests') {
                             steps {
                                 dir("${REPO_NAME}/examples/uut_and_tests") {
-                                    withTools(params.TOOLS_XS3_VERSION) {
+                                    withTools(params.TOOLS_VERSION_XS) {
                                         withVenv {
                                             runPytest()
                                         }
@@ -115,7 +115,7 @@ pipeline {
                                     createVenv(reqFile: "requirements.txt")
                                     dir("examples") {
                                         xcoreBuild(
-                                            toolsVersion: params.TOOLS_VX4_VERSION,
+                                            toolsVersion: params.TOOLS_VERSION_VX_XCC,
                                             cmakeOpts: '-DAPP_HW_TARGET=XK-EVK-XU416'
                                         )
                                     }
